@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Voxa</title>
+  <!-- Favicon -->
+<link rel="icon" type="image/png" href="/static/images/weblogo.png" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#FFE22A; --card:#111827; --muted:#94a3b8; --fg:#e5e7eb; --accent:#22d3ee; }
+*{box-sizing:border-box} body{margin:0; font-family:Inter,system-ui,Arial,sans-serif; background:var(--bg); color:var(--fg);}
+.wrap {
+  max-width: 900px;
+  margin: 0 auto;        /* remove top/bottom margin */
+  padding: 40px 24px;
+  min-height: 100vh;     /* full screen height */
+  display: flex;
+  align-items: center;   /* vertical center */
+  justify-content: center; /* horizontal center */
+}
+.card{background:var(--card); border-radius:16px; padding:24px; box-shadow:0 10px 30px rgba(0,0,0,.3); width: 100%}
+h1{margin:0 0 12px; font-size:28px}
+p{color:var(--muted)}
+textarea{width:100%; min-height:140px; padding:12px; border-radius:12px; border:1px solid #1f2937; background:#0b1020; color:var(--fg);}
+.row{display:flex; gap:12px; align-items:center; margin-top:12px; flex-wrap:wrap}
+select, button{height:44px; border-radius:12px; border:1px solid #1f2937; background:#0b1020; color:var(--fg); padding:0 12px}
+
+/* Hero Section */
+.hero {
+  height: 100vh; /* full screen */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: linear-gradient(to right, #22d3ee, #38bdf8);
+  color: #001;
+  padding: 40px;
+}
+
+.hero-content h1 {
+  font-size: 8vw;
+  margin-bottom: 16px;
+}
+
+.hero-content p {
+  font-size: 20px;
+  margin-bottom: 24px;
+  color: #001;
+}
+
+.hero-btn {
+  background: #111827;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.hero-btn:hover {
+  background: #0b1020;
+  transform: scale(1.05);
+}
+
+
+button {
+  background: linear-gradient(90deg, #22d3ee, #38bdf8);
+  color: #001;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  padding: 10px 20px;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0.3) 100%
+  );
+  transform: skewX(-20deg);
+}
+
+button:hover::before {
+  animation: shine 0.8s forwards;
+}
+
+@keyframes shine {
+  100% {
+    left: 125%;
+  }
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+
+.status{margin-top:10px; font-size:14px; color:var(--muted)}
+
+.audio-player {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--card);
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+.audio-player {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+
+.audio-player button {
+  background: var(--accent);
+  border: none;
+  color: #001;
+  font-size: 20px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+#play-pause {
+  width: 50px;   /* or whatever size you want */
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, #22d3ee, #38bdf8);
+  border: none;
+  color: #001;
+  font-size: 22px;
+  font-weight: bold;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.audio-player button:hover {
+  transform: scale(1.1);
+}
+
+.progress-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+#progress {
+  flex: 1;
+  appearance: none;
+  height: 6px;
+  border-radius: 4px;
+  background: #0b1020;
+  cursor: pointer;
+}
+
+#progress::-webkit-slider-thumb {
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+}
+
+#progress::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  border: none;
+}
+
+#volume {
+  width: 80px;
+  appearance: none;
+  height: 6px;
+  border-radius: 4px;
+  background: #0b1020;
+  cursor: pointer;
+}
+
+#volume::-webkit-slider-thumb {
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+#volume::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: none;
+}
+
+#current-time, #duration {
+  font-size: 14px;
+  color: var(--muted);
+  min-width: 40px;
+  text-align: center;
+}
+    .audio-player {
+  display: none;
+}
+.audio-player.active {
+  display: flex;
+}
+.download-btn {
+  display: inline-block;
+  background: #4CAF50;   /* green button */
+  color: white;
+  padding: 10px 18px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.download-btn {
+  display: inline-block;
+  background: linear-gradient(90deg, #22d3ee, #38bdf8); /* same as play */
+  color: #001;
+  padding: 10px 18px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 10px rgba(34, 211, 238, 0.3); /* subtle glow */
+}
+
+.download-btn:hover {
+  transform: scale(1.08); /* popup effect */
+  box-shadow: 0 0 12px #22d3ee, 0 0 24px #38bdf8; /* shine effect */
+}
+
+<!--  Responsivenvess-->
+/* ================= RESPONSIVE FIXES ================= */
+
+/* Make sure card fills screen width on small devices */
+.card {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Flex row adapts to small screens */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.row label,
+.row select,
+.row button {
+  flex: 1 1 auto;
+  min-width: 120px;
+}
+
+/* Hero section responsiveness */
+.hero-content h1 {
+  font-size: clamp(28px, 8vw, 60px); /* scales between 28px and 60px */
+}
+
+.hero-content p {
+  font-size: clamp(16px, 3vw, 20px);
+}
+
+/* Button scaling */
+button, .hero-btn {
+  font-size: clamp(14px, 2vw, 16px);
+  padding: 10px 18px;
+}
+
+/* Audio player responsiveness */
+.audio-player {
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.progress-container {
+  flex: 1 1 100%;
+  margin-top: 8px;
+}
+
+/* ================= MEDIA QUERIES ================= */
+@media (max-width: 768px) {
+  .wrap {
+    padding: 20px 12px;
+  }
+
+  textarea {
+    min-height: 100px;
+  }
+
+  .row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .row label,
+  .row select,
+  .row button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 20px;
+  }
+
+  .hero-content h1 {
+    font-size: 32px;
+  }
+
+  .hero-content p {
+    font-size: 14px;
+  }
+
+  button, .hero-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+
+
+
+</style>
+</head>
+<body>
+<!-- Hero Section -->
+
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Welcome to Voxa</h1>
+      <p>Convert your text into natural, human-like voice in seconds.</p>
+      <a href="#tts" class="hero-btn">Start Now</a>
+    </div>
+  </section>
+<div class="wrap" id="tts">
+<div class="card">
+<h1>Text → Voice</h1>
+<p>Words that talk — Powered by Voxa</p>
+
+
+<label for="text">Your text</label>
+<textarea id="text" placeholder="Type something friendly...">Hello! This voice was generated by text-to-speech, Voxa.</textarea>
+
+
+<div class="row">
+<label for="voice">Voice</label>
+<select id="voice">
+  {% for v in voices %}
+    <option value="{{ v.id }}" {% if v.id==default_voice %}selected{% endif %}>
+      {{ v.id | capitalize }} ({{ v.gender }})
+    </option>
+  {% endfor %}
+</select>
+
+
+
+<label for="format">Format</label>
+<select id="format">
+<option value="mp3" selected>mp3</option>
+<option value="wav">wav</option>
+<option value="opus">opus</option>
+</select>
+
+
+<button id="speak">Generate</button>
+</div>
+
+
+<div class="status" id="status"></div>
+<!--<audio id="player" controls></audio>-->
+    <div class="audio-player">
+  <button id="play-pause" class="play">&#9658;</button>
+  <div class="progress-container">
+    <span id="current-time">0:00</span>
+    <input type="range" id="progress" value="0" min="0" max="100">
+    <span id="duration">0:00</span>
+  </div>
+  <input type="range" id="volume" min="0" max="1" step="0.01" value="1">
+  <audio id="audio" src="your-audio.mp3"></audio>
+      <!-- Download Button -->
+      <div id="download-container" style="display:none;"> <a id="download-link" href="#" download class="download-btn">⬇ Download Audio</a> </div>
+</div>
+
+</div>
+</div>
+<footer style="margin-top: 40px; text-align: center; font-size: 14px; color: #555;">
+  <p style="color: #222">Made with ❤️ by <strong>Saad</strong></p>
+  <p>
+    📞 <a href="tel:+923167059166" style="color: #222; text-decoration: none;">+92 316 7059166</a> |
+    💬 <a href="https://wa.me/923167059166" target="_blank" style="color: #25D366; font-weight: bold; text-decoration: none;">WhatsApp</a>
+  </p>
+</footer>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
